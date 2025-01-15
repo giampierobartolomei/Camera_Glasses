@@ -6,9 +6,10 @@
 */
 
 #include "appGlobals.h"
-#include "SerialCommandHandler.h"
+//#include "SerialCommandHandler.h" //added by me
+#include "BluetoothCameraServer.h" //Added by me, from max code
 
-bool forceRecord = false;
+bool forceRecord = false; // added by me and commented the declaratiion in mjpeg2sd.cpp
 
 void setup() {
   logSetup();
@@ -82,7 +83,9 @@ void setup() {
     checkMemory("Setup");
     if (DEBUG_MEM) runTaskStats();
   } 
-  startSerialCommandTask(forceRecord);
+  
+  setup_BLE_ESP32(); //from max code
+  //startSerialCommandTask(forceRecord); //added by me for serial input start/stop recording and video saving
 }
 
 void loop() {
