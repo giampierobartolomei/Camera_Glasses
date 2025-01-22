@@ -23,5 +23,5 @@ On first installation, the application will start in wifi AP mode - connect to S
 
 now the video is ready for the Computer Vision Program.
 
-
+K = 0.785
 
