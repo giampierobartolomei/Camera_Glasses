@@ -10,6 +10,7 @@
 #include "BluetoothCameraServer.h" //Added by me, from max code
 
 bool forceRecord = false; // added by me and commented the declaratiion in mjpeg2sd.cpp
+bool useMotion  = false; // whether to use camera for motion detection (with motionDetect.cpp)
 
 void setup() {
   logSetup();
@@ -91,6 +92,8 @@ void setup() {
 void loop() {
   // confirm not blocked in setup
   LOG_INF("=============== Total tasks: %u ===============\n", uxTaskGetNumberOfTasks() - 1);
+  float currentVoltage_print = (float)(smoothAnalog(18)) * 3.3 * 2 / 4095;
+  LOG_INF("Battery Voltage: ", smoothAnalog(4));
   delay(1000);
   vTaskDelete(NULL); // free 8k ram
 }

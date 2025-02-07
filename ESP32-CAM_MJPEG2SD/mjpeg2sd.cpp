@@ -11,7 +11,7 @@
 #define FB_CNT 4 // number of frame buffers
 
 // user parameters set from web
-bool useMotion  = true; // whether to use camera for motion detection (with motionDetect.cpp)
+//bool useMotion  = false; // whether to use camera for motion detection (with motionDetect.cpp)
 bool dbgMotion  = false;
 //bool forceRecord = false; // Recording enabled by rec button
 
@@ -133,8 +133,8 @@ static void openAvi() {
   highPoint = AVI_HEADER_LEN; // allot space for AVI header
   prepAviIndex();
 }
-
-static inline bool doMonitor(bool capturing) {
+static inline bool doMonitor = false;
+/*static inline bool doMonitor(bool capturing) {
   // monitor incoming frames for motion 
   static uint8_t motionCnt = 0;
   // ratio for monitoring stop during capture / movement prior to capture
@@ -143,7 +143,7 @@ static inline bool doMonitor(bool capturing) {
   if (++motionCnt/checkRate) motionCnt = 0; // time to check for motion
   return !(bool)motionCnt;
 }  
-
+*/
 static void timeLapse(camera_fb_t* fb, bool tlStop = false) {
   // record a time lapse avi
   // Note that if FPS changed during time lapse recording, 
@@ -402,8 +402,8 @@ static boolean processFrame() {
   }
 
   // determine if time to monitor
-  if (useMotion && doMonitor(isCapturing)) captureMotion = checkMotion(fb, isCapturing); // check 1 in N frames
-  if (!useMotion && doMonitor(true)) checkMotion(fb, false, true); // calc light level only
+  if (useMotion && doMonitor) captureMotion = checkMotion(fb, isCapturing); // check 1 in N frames
+  if (!useMotion && doMonitor) checkMotion(fb, false, true); // calc light level only
   
 #if INCLUDE_PERIPH
   if (pirUse) {

@@ -60,7 +60,7 @@ bool allowAP = true;  // set to true to allow AP to startup if cannot connect to
 uint32_t wifiTimeoutSecs = 30; // how often to check wifi status
 static bool APstarted = false;
 esp_ping_handle_t pingHandle = NULL;
-bool usePing = true;
+bool usePing = false; //CAMBIATO DA ME
 
 static void startPing();
 
