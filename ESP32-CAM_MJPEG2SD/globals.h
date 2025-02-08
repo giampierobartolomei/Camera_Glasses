@@ -243,7 +243,7 @@ extern int refreshVal;
 extern bool dataFilesChecked;
 extern char ipExtAddr[];
 extern bool doGetExtIP;
-extern bool usePing; // set to false if problems related to this issue occur: https://github.com/s60sc/ESP32-CAM_MJPEG2SD/issues/221
+extern bool usePing = false; // set to false if problems related to this issue occur: https://github.com/s60sc/ESP32-CAM_MJPEG2SD/issues/221
 extern bool wsLog;
 extern uint16_t sustainId;
 extern bool heartBeatDone;

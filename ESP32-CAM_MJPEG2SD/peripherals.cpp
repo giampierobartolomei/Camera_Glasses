@@ -31,17 +31,17 @@
 #include "driver/ledc.h"
 
 // peripherals used
-bool pirUse; // true to use PIR for motion detection
-bool ledBarUse; // true to use led bar
+bool pirUse = false; // true to use PIR for motion detection
+bool ledBarUse = false; // true to use led bar
 uint8_t lampLevel; // brightness of on board lamp led 
 bool lampAuto = false; // if true in conjunction with pirUse, switch on lamp when PIR activated at night
-bool lampNight; // if true, lamp comes on at night (not used)
-int lampType; // how lamp is used
+bool lampNight = false; // if true, lamp comes on at night (not used)
+int lampType = false; // how lamp is used
 bool voltUse = true; // true to report on ADC pin eg for for battery
-bool stickUse; // true to use joystick
-bool buzzerUse; // true to use buzzer
-bool stepperUse; // true to use stepper motor
-bool SVactive; // true to use servos
+bool stickUse = false; // true to use joystick
+bool buzzerUse = false; // true to use buzzer
+bool stepperUse = false; // true to use stepper motor
+bool SVactive = false; // true to use servos
 TaskHandle_t heartBeatHandle = NULL;
 bool RCactive = false;
 
@@ -60,8 +60,7 @@ int servoTiltPin;
 int ds18b20Pin; // if INCLUDE_DS18B20 true
 
 // batt monitoring 
-// only pin 33 can be used on ESP32-Cam module as it is the only available analog pin
-int voltPin=18; 
+int voltPin=5; //GPIO5/A4/D4
 
 // additional peripheral configuration
 // configure for specific servo model, eg for SG90
@@ -284,6 +283,7 @@ float getNTCcelsius (uint16_t resistance, float oldTemp) {
 /************ battery monitoring ************/
 // Read voltage from battery connected to ADC pin
 // input battery voltage may need to be reduced by voltage divider resistors to keep it below 3V3.
+// Actually using 2 100k resistor in order to divide by two the voltage
 static float currentVoltage = -1.0; // no monitoring
 TaskHandle_t battHandle = NULL;
 float readVoltage()  {
@@ -295,7 +295,8 @@ static void battTask(void* parameter) {
   while (true) {
     // convert analog reading to corrected voltage.  analogReadMilliVolts() not working
     currentVoltage = (float)(smoothAnalog(voltPin)) * 3.3 * voltDivider / MAX_ADC;
-
+    Serial.printf("Battery voltage: %.2fV\n", currentVoltage); //added by me
+    LOG_INF("Battery voltage: %.2fV", currentVoltage); //added by me
     static bool sentExtAlert = false;
     if (currentVoltage < voltLow && !sentExtAlert) {
       sentExtAlert = true; // only sent once per esp32 session
@@ -677,6 +678,7 @@ static void prepLedBar() {
 
 void prepPeripherals() {
   // initial setup of each peripheral on client or extender
+  LOG_INF("Initializing peripherals...");
   setupADC();
   setupBatt();
   setupLamp();
@@ -687,6 +689,7 @@ void prepPeripherals() {
   prepStepper();
   prepLedBar();
   debugMemory("prepPeripherals");
+  LOG_INF("Initialized!");
 }
 
 #endif
