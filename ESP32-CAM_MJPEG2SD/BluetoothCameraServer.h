@@ -18,6 +18,7 @@ extern BLECharacteristic *commandCharacteristic;
 // Funzioni
 void setup_BLE_ESP32();
 void parse_commands(char *commands);
+void voltageUpdateTask(void *parameter);
 
 // Callback del server BLE
 class ServerCallbacksHandler : public BLEServerCallbacks

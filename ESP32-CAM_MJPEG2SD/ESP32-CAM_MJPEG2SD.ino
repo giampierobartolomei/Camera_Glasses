@@ -6,6 +6,9 @@
 
 8/02: I tried to add prints on serial for battery voltage status, by modifyng this code, appGlobals.h, globals.h, pheriperals.cpp
 Then I try to add WebDav functionalities. I modified also utils.cpp by putting to false use ping and setting ap ip and name.
+12/02: I defined as const useMotion and commented all others declarations - it works, no more autorecording
+17/02: Now battery voltage is sent on command char every ten seconds (uncomment the serial prints to read in serial monitor) in file BluetoothCamerServer.cpp. try using nRF connect iPhone app (UTF-8)
+
 */
 
 #include "appGlobals.h"
@@ -13,7 +16,8 @@ Then I try to add WebDav functionalities. I modified also utils.cpp by putting t
 #include "BluetoothCameraServer.h" //Added by me, from max code
 
 bool forceRecord = false; // added by me and commented the declaratiion in mjpeg2sd.cpp
-bool useMotion  = false; // whether to use camera for motion detection (with motionDetect.cpp), added by me, but only with changs on motionDetect.cpp it works
+//bool useMotion  == false; // whether to use camera for motion detection (with motionDetect.cpp), added by me, but only with changs on motionDetect.cpp it works
+const bool useMotion = false; // Variabile costante, non modificabile
 
 void setup() {
   logSetup();
@@ -94,9 +98,11 @@ void setup() {
   setup_BLE_ESP32(); //from max code
   //startSerialCommandTask(forceRecord); //added by me for serial input start/stop recording and video saving
 }
-//It should appears: first battery level voltage, pheripherals setup, total tasks and then the updating of the battery level every 'VoltInterval' seconds
+//It should appear: first battery level voltage(commented), pheripherals setup, total tasks and then the updating of the battery level every interval setted in bt library file .cpp (commented)
 void loop() {
   // confirm not blocked in setup
+  //float voltage = (float)(smoothAnalog(5)) * 3.3 * 2 / 8191;
+  //LOG_INF("Initial battery voltage: %.2fV", voltage);
   LOG_INF("=============== Total tasks: %u ===============\n", uxTaskGetNumberOfTasks() - 1);
-  vTaskDelete(NULL); // free 8k ram, I think it can be commented if we want some actions in the loop
+  vTaskDelete(NULL); // free 8k ram
 }

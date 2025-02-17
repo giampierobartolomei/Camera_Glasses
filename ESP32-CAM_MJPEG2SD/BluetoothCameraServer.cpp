@@ -1,10 +1,12 @@
 #include "appGlobals.h"
 #include "BluetoothCameraServer.h"
-
+//#include "globals.h"
 // Dichiarazione delle variabili globali
 BLEService *generalService;
 BLECharacteristic *commandCharacteristic;
 extern bool forceRecord;
+// Dichiarazione del task per l'aggiornamento della tensione
+void voltageUpdateTask(void *parameter);
 // Setup del BLE
 void setup_BLE_ESP32()
 {
@@ -30,6 +32,18 @@ void setup_BLE_ESP32()
   pAdvertising->setScanResponse(true);
   BLEDevice::startAdvertising();
   Serial.println("Characteristic defined!");
+
+
+      // Creazione del task per aggiornare la tensione
+  xTaskCreatePinnedToCore(
+      voltageUpdateTask,   // Funzione del task
+      "VoltageUpdateTask", // Nome del task
+      2048,               // Dimensione dello stack
+      NULL,               // Parametro
+      1,                  // Priorità
+      NULL,               // Handle del task
+      0                   // Core su cui eseguirlo
+  );
 }
 
 // Funzione per il parsing dei comandi
@@ -61,3 +75,22 @@ void parse_commands(char* commands)
   }
 }
 
+void voltageUpdateTask(void *parameter)
+{
+    for (;;)
+    {
+        float voltage = (float)(smoothAnalog(5)) * 3.3 * 2 / 8191; //prendere valore da peripherals.cpp
+
+        // Converti il valore in una stringa
+        char voltageStr[16];
+        dtostrf(voltage, 1, 4, voltageStr); // Converte il float in stringa con 4 decimali
+
+        // Invia la stringa come UTF-8
+        commandCharacteristic->setValue((uint8_t *)voltageStr, strlen(voltageStr));
+        commandCharacteristic->notify();
+
+        //Serial.print("Voltage [V]: ");
+        //Serial.println(voltage);
+        vTaskDelay(10000 / portTICK_PERIOD_MS); // Aggiornamento ogni 5 secondi
+    }
+}

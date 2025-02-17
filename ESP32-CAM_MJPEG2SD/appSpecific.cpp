@@ -53,9 +53,9 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
   }
   else if (!strcmp(variable, "enableMotion")) {
     // Turn on/off motion detection 
-    useMotion = (intVal) ? true : false; 
+    //useMotion = (intVal) ? true : false; 
     if (fsizePtr > 16 && useMotion) {
-      useMotion = false;
+      // useMotion = false;
       updateConfigVect("enableMotion", "0");
       LOG_WRN("Motion detection disabled as frame size %s is too large", frameData[fsizePtr].frameSizeStr);
     } else LOG_INF("%s motion detection", useMotion ? "Enabling" : "Disabling");
@@ -254,7 +254,7 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
         updateConfigVect("fps", String(FPS).c_str()); 
       }
       if (fsizePtr > 16 && useMotion) {
-        useMotion = false;
+        //useMotion = false;
         updateConfigVect("enableMotion", "0");
         LOG_WRN("Motion detection disabled as frame size %s is too large", frameData[fsizePtr].frameSizeStr);
       }

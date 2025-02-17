@@ -16,9 +16,9 @@ bool dbgMotion  = false;
 //bool forceRecord = false; // Recording enabled by rec button
 
 // motion detection parameters
-int moveStartChecks = 5; // checks per second for start motion 
-int moveStopSecs = 2; // secs between each check for stop, also determines post motion time
-int maxFrames = 20000; // maximum number of frames in video before auto close 
+int moveStartChecks = 0; // checks per second for start motion 
+int moveStopSecs = 0; // secs between each check for stop, also determines post motion time
+int maxFrames = 0; // maximum number of frames in video before auto close 
 
 // record timelapse avi independently of motion capture, file name has same format as avi except ends with T
 int tlSecsBetweenFrames; // too short interval will interfere with other activities
@@ -400,11 +400,11 @@ static boolean processFrame() {
     keepFrame(fb);
     doKeepFrame = false;
   }
-
+/*
   // determine if time to monitor
   if (useMotion && doMonitor) captureMotion = checkMotion(fb, isCapturing); // check 1 in N frames
   if (!useMotion && doMonitor) checkMotion(fb, false, true); // calc light level only
-  
+*/  
 #if INCLUDE_PERIPH
   if (pirUse) {
     pirVal = getPIRval();
@@ -731,7 +731,7 @@ bool prepRecording() {
     sdMinCardFreeSpace = 0;
     doRecording = false;
     sdLog = false;
-    useMotion = false;
+    //useMotion = false;
     doRecording = false; 
     LOG_WRN("Recording disabled as no SD card");
   } else {

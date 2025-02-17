@@ -34,8 +34,8 @@ char* jsonBuff = NULL;
 /** Use the web interface to configure wifi settings **/
 
 char hostName[MAX_HOST_LEN] = ""; // Default Host name
-char ST_SSID[MAX_HOST_LEN]  = ""; //Default router ssid
-char ST_Pass[MAX_PWD_LEN] = ""; //Default router passd
+char ST_SSID[MAX_HOST_LEN]  = "ISTC_Floor_4"; //Default router ssid
+char ST_Pass[MAX_PWD_LEN] = "Rmg!2024"; //Default router passd
 
 // leave following blank for dhcp
 char ST_ip[MAX_IP_LEN]  = ""; // Static IP
@@ -45,7 +45,7 @@ char ST_ns1[MAX_IP_LEN] = ""; // DNS Server, can be router IP (needed for SNTP)
 char ST_ns2[MAX_IP_LEN] = ""; // alternative DNS Server, can be blank
 
 // Access point Config Portal SSID and Pass
-char AP_SSID[MAX_HOST_LEN] = "CameraModule";
+char AP_SSID[MAX_HOST_LEN] = "";
 char AP_Pass[MAX_PWD_LEN] = "";
 char AP_ip[MAX_IP_LEN]  = "192.168.4.1"; // Leave blank to use 192.168.4.1
 char AP_sn[MAX_IP_LEN]  = "";
@@ -60,7 +60,7 @@ bool allowAP = true;  // set to true to allow AP to startup if cannot connect to
 uint32_t wifiTimeoutSecs = 60; // how often to check wifi status
 static bool APstarted = false;
 esp_ping_handle_t pingHandle = NULL;
-bool usePing = false; //CAMBIATO DA ME
+bool usePing; //CAMBIATO DA ME a false
 
 static void startPing();
 

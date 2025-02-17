@@ -56,6 +56,7 @@ static uint8_t* currBuff = NULL;
 
 /**********************************************************************************/
 
+
 static bool jpg2rgb(const uint8_t* src, size_t src_len, uint8_t* out, jpg_scale_t scale);
 
 bool isNight(uint8_t nightSwitch) {
@@ -167,7 +168,7 @@ static bool tinyMLclassify() {
 bool checkMotion(camera_fb_t* fb, bool motionStatus, bool lightLevelOnly) {
   // check difference between current and previous image (subtract background)
   // convert image from JPEG to downscaled RGB888 or 8 bit grayscale bitmap
-  useMotion = false; //AGGIUNTO DA ME
+  //useMotion = false; //AGGIUNTO DA ME
   uint32_t dTime = millis();
   uint32_t lux = 0;
   static uint32_t motionCnt = 0;
@@ -184,7 +185,7 @@ bool checkMotion(camera_fb_t* fb, bool motionStatus, bool lightLevelOnly) {
   if (!jpg2rgb((uint8_t*)fb->buf, fb->len, rgb_buf, (jpg_scale_t)scaling)) {
     if (fsizePtr > 16) {
       LOG_WRN("Frame size %s too large for processing", frameData[fsizePtr].frameSizeStr);
-      useMotion = false;
+      //useMotion = false;
     } else LOG_WRN("jpg2rgb() failure");
     return motionStatus;
   }
@@ -317,6 +318,7 @@ void notifyMotion(camera_fb_t* fb) {
 }
 
 /************* copied and modified from esp32-camera/to_bmp.c to access jpg_scale_t *****************/
+
 
 typedef struct {
   uint16_t width;

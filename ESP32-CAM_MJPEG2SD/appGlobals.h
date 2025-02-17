@@ -323,7 +323,7 @@ extern float motionVal;  // motion sensitivity setting - min percentage of chang
 extern uint8_t nightSwitch; // initial white level % for night/day switching
 extern bool nightTime; 
 extern bool stopPlayback;
-extern bool useMotion; // whether to use camera for motion detection (with motionDetect.cpp)  
+extern const bool useMotion; // whether to use camera for motion detection (with motionDetect.cpp)  
 extern uint8_t colorDepth;
 extern bool timeLapseOn; // enable time lapse recording
 extern int maxFrames;
