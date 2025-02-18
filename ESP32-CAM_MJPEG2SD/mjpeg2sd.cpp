@@ -1,3 +1,4 @@
+#include "globals.h"
 /*
 * Capture ESP32 Cam JPEG images into a AVI file and store on SD
 * matches file writes to the SD card sector size.
@@ -7,7 +8,7 @@
 */
 
 #include "appGlobals.h"
-
+#define LED_ORANGE GPIO_NUM_21 // LED on board
 #define FB_CNT 4 // number of frame buffers
 
 // user parameters set from web
@@ -105,6 +106,37 @@ void controlFrameTimer(bool restartTimer) {
       timerAttachInterrupt(frameTimer, &frameISR);
       timerAlarm(frameTimer, frameInterval, true, 0); // micro seconds
     } else LOG_ERR("Failed to setup frameTimer");
+  }
+}
+/****************** Recording Led **********************/
+
+TaskHandle_t blinkHandle = NULL; // Handle per il task del LED
+volatile bool stopBlinking = false; // Variabile per fermare il lampeggio
+
+
+void blinkLedTask(void *parameter) {
+  pinMode(LED_ORANGE, OUTPUT); // Imposta il pin del LED come output
+  while (!stopBlinking) {  // Continua finché stopBlinking è false
+    gpio_set_level(LED_ORANGE, 1); // Accendi il LED
+    vTaskDelay(pdMS_TO_TICKS(200)); // Aspetta per 200ms
+    gpio_set_level(LED_ORANGE, 0); // Spegni il LED
+    vTaskDelay(pdMS_TO_TICKS(200)); // Aspetta per altri 200ms
+  }
+  vTaskDelete(NULL); // Termina il task quando stopBlinking è true
+}
+
+void turnOnLed() {
+  if (blinkHandle == NULL) { // Verifica se il task non è già stato creato
+    stopBlinking = false; // Avvia il lampeggio
+    xTaskCreate(blinkLedTask, "BlinkLED", 2048, NULL, 1, &blinkHandle); // Crea il task per il lampeggio
+  }
+}
+
+void turnOffLed() {
+  stopBlinking = true; // Ferma il lampeggio
+  if (blinkHandle != NULL) {
+    vTaskDelete(blinkHandle); // Ferma il task
+    blinkHandle = NULL; // Reset dell'handle
   }
 }
 
@@ -278,6 +310,7 @@ static void saveFrame(camera_fb_t* fb) {
 
 static bool closeAvi() {
   // closes the recorded file
+  turnOffLed(); //turn off recording led
   uint32_t vidDuration = millis() - startTime;
   uint32_t vidDurationSecs = lround(vidDuration/1000.0);
   logLine();
@@ -427,6 +460,7 @@ static boolean processFrame() {
       stopPlaying(); // terminate any playback
       stopPlayback = true; // stop any subsequent playback
       LOG_ALT("Capture started by %s%s%s", captureMotion ? "Motion " : "", pirVal ? "PIR" : "",forceRecord ? "Button" : "");
+      turnOnLed(); //Orange led blinking when recording
 #if INCLUDE_MQTT
       if (mqtt_active) {
         sprintf(jsonBuff, "{\"RECORD\":\"ON\", \"TIME\":\"%s\"}", esp_log_system_timestamp());
@@ -952,3 +986,4 @@ bool prepCam() {
   debugMemory("prepCam");
   return res;
 }
+

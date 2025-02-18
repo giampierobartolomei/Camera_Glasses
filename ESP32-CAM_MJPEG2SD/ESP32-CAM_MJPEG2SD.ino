@@ -8,7 +8,7 @@
 Then I try to add WebDav functionalities. I modified also utils.cpp by putting to false use ping and setting ap ip and name.
 12/02: I defined as const useMotion and commented all others declarations - it works, no more autorecording
 17/02: Now battery voltage is sent on command char every ten seconds (uncomment the serial prints to read in serial monitor) in file BluetoothCamerServer.cpp. try using nRF connect iPhone app (UTF-8)
-
+18/02: i changed max_adc values since it can change with device changing, you can see the comment in bt lib .cpp. i added also a factor for correcting R tollerance.I also modified mjpeg2sd in order to blink orange LED during recording.
 */
 
 #include "appGlobals.h"
