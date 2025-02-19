@@ -79,7 +79,7 @@ void voltageUpdateTask(void *parameter)
 {
     for (;;)
     {
-        float voltage = (float)(smoothAnalog(5)) * 3.3 * 2 / 4095; //prendere valore da peripherals.cpp MAX_ADC 8191 O 4095 a seconda se adc bit 12 o 13
+        float voltage = (float)(smoothAnalog(5)) * 3.3 * 2 / 8191; //prendere valore da peripherals.cpp MAX_ADC 8191 O 4095 a seconda se adc bit 12 o 13
         voltage *= (3.50/3.28); //fattore di conversione dovuto a tolleranze
 
         // Converti il valore in una stringa

@@ -138,6 +138,7 @@ void turnOffLed() {
     vTaskDelete(blinkHandle); // Ferma il task
     blinkHandle = NULL; // Reset dell'handle
   }
+  gpio_set_level(LED_ORANGE, 0); // Mantieni il LED acceso dopo lo stop
 }
 
 /**************** capture AVI  ************************/
