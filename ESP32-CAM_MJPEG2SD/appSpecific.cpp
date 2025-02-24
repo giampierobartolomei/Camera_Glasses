@@ -140,7 +140,7 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
     LOG_INF("Remote speaker is %s", spkrRem ? "On" : "Off");
     if (spkrRem && !micGain) LOG_WRN("Mic gain is off");
   }
-  else if (!strcmp(variable, "micGain")) micGain = intVal;
+//  else if (!strcmp(variable, "micGain")) micGain = intVal; -modified by me
   else if (!strcmp(variable, "micSckPin")) micSckPin = intVal;
   else if (!strcmp(variable, "micSWsPin")) micSWsPin = intVal;
   else if (!strcmp(variable, "micSdPin")) micSdPin = intVal;
@@ -148,7 +148,7 @@ bool updateAppStatus(const char* variable, const char* value, bool fromUser) {
   else if (!strcmp(variable, "mampBckIo")) mampBckIo = intVal;
   else if (!strcmp(variable, "mampSwsIo")) mampSwsIo = intVal;
   else if (!strcmp(variable, "mampSdIo")) mampSdIo = intVal;
-  else if (!strcmp(variable, "AudActive")) AudActive = intVal;
+//  else if (!strcmp(variable, "AudActive")) AudActive = intVal;-modified by me
 #endif
 #if INCLUDE_TELEM
   else if (!strcmp(variable, "teleUse")) teleUse = (bool)intVal;

@@ -1,3 +1,4 @@
+#include "globals.h"
 //
 // Handle microphone input, and speaker output via amp.
 // The microphone input, and the output to amplifier, each make use of a
@@ -35,7 +36,7 @@ I2SClass I2Sstd;
 i2s_port_t MIC_CHAN = I2S_NUM_1;
 i2s_port_t AMP_CHAN = I2S_NUM_0;
 
-static bool micUse = false; // esp mic available
+static bool micUse = true; // esp mic available .modified by me
 bool micRem = false; // use browser mic (depends on app)
 static bool ampUse = false; // whether esp amp / speaker available
 bool spkrRem = false; // use browser speaker
@@ -43,7 +44,7 @@ bool volatile stopAudio = false;
 static bool micRecording = false;
 
 // I2S devices
-bool I2Smic; // true if I2S, false if PDM
+bool I2Smic; // true if I2S, false if PDM 
 // I2S SCK and I2S BCLK can share same pin
 // I2S external Microphone pins
 // INMP441 I2S microphone pinout, connect L/R to GND for left channel
@@ -62,7 +63,7 @@ int mampSdIo = -1;   // I2S DIN
 
 int ampTimeout = 1000; // ms for amp write abandoned if no output
 uint32_t SAMPLE_RATE = 16000;  // audio rate in Hz
-int micGain = 0;  // microphone gain 0 is off 
+const int micGain = 5;  // microphone gain 0 is off - trying to find best value modified by me
 int8_t ampVol = 0; // amplifier volume factor 0 is off
 
 TaskHandle_t audioHandle = NULL;
@@ -84,7 +85,7 @@ static const char* micLabels[2] = {"PDM", "I2S"};
 #define psramMax (ONEMEG * 2)
 #endif
 #ifdef ISCAM
-bool AudActive = false; // whether to show audio features
+const bool AudActive = true; // whether to show audio features - modified by me
 static File wavFile;
 #endif
 
@@ -123,6 +124,7 @@ static bool setupMic() {
     res = I2Spdm.begin(I2S_MODE_PDM_RX, SAMPLE_RATE, I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_MONO, I2S_STD_SLOT_LEFT);
   }
   return res;
+  LOG_INF("stupMic Result: ", res);
 }
 
 static bool setupAmp() {

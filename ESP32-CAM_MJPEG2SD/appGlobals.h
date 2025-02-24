@@ -31,7 +31,7 @@
 ***************************************************************/
 #define INCLUDE_FTP_HFS false // ftp.cpp (file upload)
 #define INCLUDE_TGRAM false   // telegram.cpp (Telegram app interface)
-#define INCLUDE_AUDIO false   // audio.cpp (microphones & speakers)
+#define INCLUDE_AUDIO true   // audio.cpp (microphones & speakers)
 #define INCLUDE_PERIPH true  // peripherals.cpp (servos, PIR, led etc)
 #define INCLUDE_SMTP false    // smtp.cpp (email)
 #define INCLUDE_MQTT false    // mqtt.cpp (MQTT)
@@ -316,14 +316,14 @@ extern uint8_t fsizePtr; // index to frameData[] for record
 extern bool isCapturing;
 extern uint8_t lightLevel;  
 extern uint8_t lampLevel;  
-extern int micGain;
+extern const int micGain; //modified by me
 extern int8_t ampVol;
 extern uint8_t minSeconds; // default min video length (includes moveStopSecs time)
 extern float motionVal;  // motion sensitivity setting - min percentage of changed pixels that constitute a movement
 extern uint8_t nightSwitch; // initial white level % for night/day switching
 extern bool nightTime; 
 extern bool stopPlayback;
-extern const bool useMotion; // whether to use camera for motion detection (with motionDetect.cpp)  
+extern const bool useMotion; // whether to use camera for motion detection (with motionDetect.cpp)  modified by me
 extern uint8_t colorDepth;
 extern bool timeLapseOn; // enable time lapse recording
 extern int maxFrames;
@@ -386,7 +386,7 @@ extern int ds18b20Pin; // if INCLUDE_DS18B20 true
 extern int voltPin; 
 
 // audio
-extern bool AudActive;
+extern const bool AudActive; //modified by me
 extern int micSckPin; // I2S SCK 
 extern int micSWsPin;  // I2S WS / PDM CLK
 extern int micSdPin;  // I2S SD / PDM DAT
