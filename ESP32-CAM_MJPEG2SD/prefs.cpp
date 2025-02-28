@@ -205,8 +205,8 @@ static bool loadPrefs() {
   }
   if (!strlen(ST_SSID)) {
      // first call only after instal
-    prefs.getString("ST_SSID", ST_SSID, MAX_PWD_LEN); // max 15 chars
-    updateConfigVect("ST_SSID", ST_SSID);
+//    prefs.getString("ST_SSID", ST_SSID, MAX_PWD_LEN); // max 15 chars
+//    updateConfigVect("ST_SSID", ST_SSID);
   } 
 
   prefs.getString("ST_Pass", ST_Pass, MAX_PWD_LEN);
@@ -242,7 +242,7 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
 
   int intVal = atoi(value); 
   if (!strcmp(variable, "hostName")) strncpy(hostName, value, MAX_HOST_LEN-1);
-  else if (!strcmp(variable, "ST_SSID")) strncpy(ST_SSID, value, MAX_HOST_LEN-1);
+//  else if (!strcmp(variable, "ST_SSID")) strncpy(ST_SSID, value, MAX_HOST_LEN-1);
   else if (!strcmp(variable, "ST_Pass") && value[0] != '*') strncpy(ST_Pass, value, MAX_PWD_LEN-1);
 
   else if (!strcmp(variable, "ST_ip")) strncpy(ST_ip, value, MAX_IP_LEN-1);
@@ -257,7 +257,7 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
   else if (!strcmp(variable, "AP_sn")) strncpy(AP_sn, value, MAX_IP_LEN-1);
   else if (!strcmp(variable, "AP_SSID")) strncpy(AP_SSID, value, MAX_HOST_LEN-1);
   else if (!strcmp(variable, "AP_Pass") && value[0] != '*') strncpy(AP_Pass, value, MAX_PWD_LEN-1); 
-  else if (!strcmp(variable, "allowAP")) allowAP = (bool)intVal;
+//  else if (!strcmp(variable, "allowAP")) allowAP = (bool)intVal;
   else if (!strcmp(variable, "useHttps")) useHttps = (bool)intVal;
   else if (!strcmp(variable, "useSecure")) useSecure = (bool)intVal;
   else if (!strcmp(variable, "doGetExtIP")) doGetExtIP = (bool)intVal;  
@@ -324,7 +324,7 @@ void updateStatus(const char* variable, const char* _value, bool fromUser) {
   else if (!strcmp(variable, "sdFreeSpaceMode")) sdFreeSpaceMode = intVal;
   else if (!strcmp(variable, "responseTimeoutSecs")) responseTimeoutSecs = intVal;
   else if (!strcmp(variable, "wifiTimeoutSecs")) wifiTimeoutSecs = intVal;
-  else if (!strcmp(variable, "usePing")) usePing = (bool)intVal;
+ // else if (!strcmp(variable, "usePing")) usePing = (bool)intVal;
   else if (!strcmp(variable, "dbgVerbose")) {
     dbgVerbose = (intVal) ? true : false;
     Serial.setDebugOutput(dbgVerbose);

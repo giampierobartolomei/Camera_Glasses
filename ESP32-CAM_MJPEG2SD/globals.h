@@ -219,7 +219,7 @@ extern char AP_sn[];
 extern char AP_gw[];
 
 extern char hostName[]; //Host name for ddns
-extern char ST_SSID[]; //Router ssid
+extern const char ST_SSID[]; //Router ssid
 extern char ST_Pass[]; //Router passd
 extern bool useHttps;
 extern bool useSecure;
@@ -236,14 +236,14 @@ extern char Auth_Name[];
 extern char Auth_Pass[];
 
 extern int responseTimeoutSecs; // how long to wait for remote server in secs
-extern bool allowAP; // set to true to allow AP to startup if cannot reconnect to STA (router)
+extern const bool allowAP; // set to true to allow AP to startup if cannot reconnect to STA (router)
 extern uint32_t wifiTimeoutSecs; // how often to check wifi status
 extern uint8_t percentLoaded;
 extern int refreshVal;
 extern bool dataFilesChecked;
 extern char ipExtAddr[];
 extern bool doGetExtIP;
-extern bool usePing; // set to false if problems related to this issue occur: https://github.com/s60sc/ESP32-CAM_MJPEG2SD/issues/221
+extern const bool usePing; // set to false if problems related to this issue occur: https://github.com/s60sc/ESP32-CAM_MJPEG2SD/issues/221
 extern bool wsLog;
 extern uint16_t sustainId;
 extern bool heartBeatDone;

@@ -34,7 +34,7 @@ char* jsonBuff = NULL;
 /** Use the web interface to configure wifi settings **/
 
 char hostName[MAX_HOST_LEN] = ""; // Default Host name
-char ST_SSID[MAX_HOST_LEN]  = ""; //Default router ssid
+const char ST_SSID[MAX_HOST_LEN]  = ""; //Default router ssid - modified by me as a const
 char ST_Pass[MAX_PWD_LEN] = ""; //Default router passd
 
 // leave following blank for dhcp
@@ -56,11 +56,11 @@ char Auth_Name[MAX_HOST_LEN] = "";
 char Auth_Pass[MAX_PWD_LEN] = "";
 
 int responseTimeoutSecs = 10; // time to wait for FTP or SMTP response
-bool allowAP = true;  // set to true to allow AP to startup if cannot connect to STA (router)
+const bool allowAP = true;  // set to true to allow AP to startup if cannot connect to STA (router)
 uint32_t wifiTimeoutSecs = 60; // how often to check wifi status
 static bool APstarted = false;
 esp_ping_handle_t pingHandle = NULL;
-bool usePing; //CAMBIATO DA ME a false
+const bool usePing = false; //CAMBIATO DA ME a false
 
 static void startPing();
 
@@ -183,15 +183,15 @@ static void setWifiSTA() {
 bool startWifi(bool firstcall) {
   // start wifi station (and wifi AP if allowed or station not defined)
   if (firstcall) {
-    WiFi.mode(WIFI_AP_STA);
+    WiFi.mode(WIFI_AP);
     WiFi.persistent(false); // prevent the flash storage WiFi credentials
-    WiFi.setAutoReconnect(false); // Set whether module will attempt to reconnect to an access point in case it is disconnected
-    WiFi.softAPdisconnect(true); // kill rogue AP on startup
+    WiFi.setAutoReconnect(true); // Set whether module will attempt to reconnect to an access point in case it is disconnected
+    WiFi.softAPdisconnect(false); // kill rogue AP on startup
     WiFi.setHostname(hostName);
     delay(100);
     WiFi.onEvent(onWiFiEvent);
   }
-  setWifiSTA();
+  //setWifiSTA();
   // connect to Wifi station
   uint32_t startAttemptTime = millis();
   // Stop trying on failure timeout, will try to reconnect later by ping
@@ -202,7 +202,7 @@ bool startWifi(bool firstcall) {
       delay(500);
     }
   }
-  if (wlStat == WL_NO_SSID_AVAIL || allowAP) setWifiAP(); // AP allowed if no Station SSID eg on first time use 
+  if (allowAP) setWifiAP(); // AP allowed if no Station SSID eg on first time use 
   if (wlStat != WL_CONNECTED) LOG_WRN("SSID %s not connected %s", ST_SSID, wifiStatusStr(wlStat));
 #if CONFIG_IDF_TARGET_ESP32S3
   setupMdnsHost(); // not on ESP32 as uses 6k of heap
