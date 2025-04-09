@@ -10,7 +10,6 @@ Then I try to add WebDav functionalities. I modified also utils.cpp by putting t
 17/02: Now battery voltage is sent on command char every ten seconds (uncomment the serial prints to read in serial monitor) in file BluetoothCamerServer.cpp. try using nRF connect iPhone app (UTF-8)
 18/02: i changed max_adc values since it can change with device changing, you can see the comment in bt lib .cpp. i added also a factor for correcting R tollerance.I also modified mjpeg2sd in order to blink orange LED during recording as a DEBUG of the recording status.
 24/02: ADDED AUDIO RECORDING!!!! modified appglobals appspecific & audio.cpp in order to force audio recording (by surpassing app settings) video file will contain '_S' on the end of filename. micGain is now 5 but can be higher. 
-26/02: 
 */
 
 #include "appGlobals.h"
@@ -48,9 +47,9 @@ void setup() {
 #endif
 
   // connect wifi or start config AP if router details not available
-  startWifi();
+//  startWifi();
 
-  startWebServer();
+//  startWebServer();
   if (strlen(startupFailure)) LOG_WRN("%s", startupFailure);
   else {
     // start rest of services

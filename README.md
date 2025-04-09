@@ -21,6 +21,10 @@ On first installation, the application will start in wifi AP mode - connect to S
 
 'ffmpeg -i input.avi -c:v libx264 -crf 23 -preset medium -c:a aac -b:a 128k output.mp4'
 
+If you need to rotate the video file:
+
+'ffmpeg -i output.mp4 -vf "transpose=2" -c:a copy output_r.mp4'
+
 now the video is ready for the Computer Vision Program.
 
 K = 0.785
