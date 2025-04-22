@@ -10,7 +10,7 @@ void voltageUpdateTask(void *parameter);
 // Setup del BLE
 void setup_BLE_ESP32()
 {
-  BLEDevice::init("CameraModule");
+  BLEDevice::init("CameraModule"); //cambiare nome in CameraModule2 per la seconda camera
   BLEDevice::setMTU(512);
   BLEServer *bleServer = BLEDevice::createServer(); // Create server
   bleServer->setCallbacks(new ServerCallbacksHandler()); // Set callbacks for connections and disconnections
