@@ -29,3 +29,4 @@ now the video is ready for the Computer Vision Program.
 
 K = 0.785
 
+FOV 60 DEGREES
