@@ -1,32 +1,160 @@
-# Camera_Glass
-17/01/25
+# Camera_Glasses • Wearable camera system for synchronized multimodal data collection and research applications
 
-List of Components:
+![Camera Glasses Overview](img/glasses.jpg)
 
-- Xiao ESP32S3 Sense Module [Look Here for first use](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/)
-- FAT 32 formatted microSD (copy data folder in it before first installation)
-- Lipo Battery LP502030
-- 3D printed case (.gcode ready for print, or downlad .stl to do some changes)
+---
 
-- Firmware: runs in Arduino Espressif core 3.1.1 [Installation Guide](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html)
+## Overview
+The **Camera_Glasses** project provides a compact, wearable vision system based on the ESP32 microcontroller for synchronized multimodal data acquisition.  
+The device records and streams video, interfaces via **Bluetooth** with the **ECHO** and **IM‑TWIN** Android applications, and integrates seamlessly with the **Platform Application** for synchronized analysis.
 
-adaption from ESP32-CAM_MJPEG2SD repo, look at their ReadMe (in ESP32-CAM_MJPEG2SD folder) for further information. Added Serial Command Libraries (not used, they was a little test for starting/stopping rec from serial commands) and BT Libraries. Just send to Charatteristic "rec" or "stp" string to start/stop rec.
-Open the project in Arduiino uno and once connected the device, select XIAO_ESP32S3 with the relative usb-c port.
-Then click on Tools -> PSRAM -> "OPI_PSRAM" and Tools -> Partition Scheme -> 3 MB APP.
-If you have some trouble to upload code (check with blink Example from Arduino) disconnect the device, press and hold Boot button and while doing it reconnect the device to the computer and finally release it.
+---
 
-On first installation, the application will start in wifi AP mode - connect to SSID: **ESP-CAM_MJPEG_...**, to allow router to be selected and router password entered via the web page on `192.168.4.1`. The configuration data file (except passwords) is automatically created, and the application web pages automatically downloaded from GitHub to the SD card **/data** folder when an internet connection is available. Now you can read the new IP address that you can use from the wifi network that you are using. At this point the interface allows you without modify the code to: decide Video Settings, DISABLE MOTION DETECT!! (this setting autorecord when recognize a movement, disable it in first use), Start a stream to check the video recording, start manually the recording and finally have acces to SD memory in order to see or delete files. Now Echo App can connect to this device and start/stop the recording simultaneously to the toy data.
+## Bill of Materials
+| Component | Description | Link |
+|------------|--------------|------|
+| LP502030 3.7 V 250 mAh Li‑ion Polymer Battery | Rechargeable | [Amazon](https://amzn.eu/d/fRJ3vzB) |
+| 3D Printed Case | STL provided in repo | GitHub |
+| OV2640 2 MP 20 cm Camera Module (66° FOV) | Main sensor | [AliExpress](https://www.aliexpress.com) |
+| Xiao ESP32 Module | Main controller | [AliExpress](https://www.aliexpress.com) |
+| Misc. | Wires, switch, solder, 3M bioadhesive tape, super glue | — |
 
-- Eye Contact Video Recording Settings: SVGA (600X800) 20 fps. then save the .avi file from sd and run this command in terminal: 
+---
 
-'ffmpeg -i input.avi -c:v libx264 -crf 23 -preset medium -c:a aac -b:a 128k output.mp4'
+## Hardware Assembly
 
-If you need to rotate the video file:
+### Components Overview
+![Assembly Diagram](img/esp32s3.png)
 
-'ffmpeg -i output.mp4 -vf "transpose=2" -c:a copy output_r.mp4'
+Follow the steps to assemble the prototype:
 
-now the video is ready for the Computer Vision Program.
+1. **3D print** the case (STL files provided in the repository).  
+2. **Install** the antenna, expansion board, and 200 mm OV2640 camera.  
+3. **Insert** a FAT32‑formatted microSD card.  
+4. **Connect** the battery, switch, and camera module as shown below.  
+5. **Assemble** and close the case, ensuring that the camera cable passes through the slot without bending.
 
-K = 0.785
 
-FOV 60 DEGREES
+### Battery and Switch Preparation
+![Battery Wiring Steps](img/wiring.png)
+
+Ensure proper soldering of the switch and battery following the indicated diagram.
+
+---
+
+## Firmware Installation
+
+1. Clone the repository:  
+   ```bash
+   git clone https://github.com/giampierobartolomei/Camera_Glasses.git
+   ```
+2. Copy the `data` folder (`CameraGlass/ESP32‑CAM_MJPEG2SD/data`) to the microSD card.  
+3. Open the `.ino` file in Arduino IDE and check these settings:  
+   - **Espressif Core:** 3.1.1  
+   - **PSRAM:** Enabled (`Tools > PSRAM > OPI_PSRAM`)  
+   - **Partition Scheme:** 3 MB APP  
+4. If the upload fails, press and hold the **Boot** button while connecting the USB cable, then release it once uploading starts.
+
+---
+
+## First Use
+
+The device now operates **via Bluetooth** only (Wi‑Fi mode deprecated).  
+Default settings are pre‑loaded: **SVGA (800×600), 20 fps, motion detect disabled**.
+
+### Recording Control Options
+
+#### 1. Using Smartphone (nRF Connect)
+- Connect to **CameraModule** via Bluetooth.  
+- Send the UTF‑8 string commands:  
+  - `rec` → start recording  
+  - `stp` → stop recording  
+
+#### 2. Using ECHO or IM‑TWIN Android App
+- Connect the **TWC device** and tap the **Camera** button.  
+- Once connected, the button turns **green**.  
+- Tap **Rec** to start/stop recording.  
+- The orange LED on the glasses blinks during active recording.
+
+![ECHO App Interface](img/echo app.jpg)
+
+---
+
+## Computer Vision Integration
+
+To process recorded videos with the **Computer Vision repository**:
+
+1. Record video and save it to the microSD card.  
+2. Copy `.avi` file to the computer and convert to `.mp4`:  
+   ```bash
+   ffmpeg -i input.avi -c:v libx264 -crf 23 -preset medium -c:a aac -b:a 128k output.mp4
+   ```
+3. If rotation is needed:  
+   ```bash
+   ffmpeg -i output.mp4 -vf "transpose=2" -c:a copy output_r.mp4
+   ```
+
+To synchronize with ECHO logs:
+1. Save ECHO log as `.csv`.  
+2. Process using `downsampling.py` and `plotanimation.py` (available in the **Echo repository**).  
+3. Compare results using **Platform Application** for unified visualization.
+
+![Gaze Analysis Example](img/gaze.png)
+
+---
+
+## Charging and Power Monitoring
+
+- Connect a **USB‑C cable** while the device is ON.  
+- The red LED inside the port blinks during charging and turns off when complete.  
+- The orange LED indicates device power.  
+- For battery voltage reading, use a 100 kΩ + 100 kΩ voltage divider (D4 → GND / Battery +).
+
+---
+
+## Platform Integration
+
+1. Mount **Camera Glasses** and **ECHO**.  
+2. Flash firmware and install the **ECHO App**.  
+3. Turn on both devices (red LED for ECHO, orange LED for glasses).  
+4. Connect via the app; both camera buttons should turn green when ready.  
+5. Press **Start LOG** to begin synchronized recording.  
+6. For new sessions, restart the app to ensure correct timestamps.  
+7. Save logs and videos, convert with FFmpeg, and load into the **Platform Application** for analysis.
+
+![Platform GUI](img/echo app.jpg)
+
+---
+
+## Output Example
+
+![Captured Frame](img/gaze.png)
+
+Example frame showing real‑time gaze detection bounding boxes and classification output.
+
+---
+
+## Repository Layout
+```
+Camera_Glasses/
+├─ firmware/                # Arduino firmware (.ino)
+├─ data/                    # Web UI / static assets
+├─ 3d_models/               # STL case and lens holder
+├─ docs/                    # images, diagrams
+└─ README.md
+```
+
+---
+
+## License
+Code released under the **MIT License**.  
+Images and documentation under **CC BY 4.0**.
+
+---
+
+## Citation
+If you use Camera_Glasses in academic work, please cite this repository and the related Echo and Platform publications.
+
+---
+
+![Exploded View](img/esp32s3.png)
