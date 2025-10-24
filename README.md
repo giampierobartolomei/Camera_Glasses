@@ -1,4 +1,4 @@
-# Camera_Glasses • Wearable camera system for synchronized multimodal data collection and research applications
+# Camera_Glasses • Wearable camera system for synchronized multimodal data collection and research applications (adaption from ESP32-CAM_MJPEG2SD repo)
 
 ![Camera Glasses Overview](img/glasses.jpg)
 
