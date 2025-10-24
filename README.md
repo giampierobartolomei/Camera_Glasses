@@ -76,7 +76,7 @@ Default settings are pre‑loaded: **SVGA (800×600), 20 fps, motion d
 - Tap **Rec** to start/stop recording.  
 - The orange LED on the glasses blinks during active recording.
 
-![ECHO App Interface](img/echo app.jpg)
+![ECHO App Interface](img/echoapp.jpg)
 
 ---
 
@@ -123,14 +123,6 @@ To synchronize with ECHO logs:
 7. Save logs and videos, convert with FFmpeg, and load into the **Platform Application** for analysis.
 
 ![Platform GUI](img/echo app.jpg)
-
----
-
-## Output Example
-
-![Captured Frame](img/gaze.png)
-
-Example frame showing real‑time gaze detection bounding boxes and classification output.
 
 ---
 
